@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+long int dp[26][26];
+int main() {
+	string s;
+	cin >> s;
+	int num;
+	cin >> num;  
+	for(int i=0;i<26;i++) {
+	    for(int j=0;j<26;j++) dp[i][j]=1000;
+	}
+
+	for(int i=0;i<num;i++) {
+		char x,y;
+		int cost;
+		cin>>x>>y>>cost;
+		dp[x-'a'][y-'a']=cost;
+		dp[y-'a'][x-'a']=cost;
+	}
+	
+	for(int i=0;i<26;i++) {
+	    for(int j=0;j<26;j++) {
+	        for(int k=0;k<26;k++) {
+	            dp[j][k]=min(dp[j][i]+dp[i][k],dp[j][k]);
+	        }
+	    }
+	}
+	
+	long int minCost=0;
+	for(int i=0;i<s.length()/2;i++) {
+	    if(s.at(i)!=s.at(s.length()-i-1)) minCost+=dp[s.at(i)-'a'][s.at(s.length()-i-1)-'a'];
+	}
+	
+	cout<<minCost;
+}
